@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Full ES6 Functions Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #8B4513; /* reddish-brown */
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #fff;
+    }
+  button {
+      background: #121212;
+      color:lightgreen;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px auto;   /* center buttons */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+      display: block;      /* stack vertically */
+      width: 220px;        /* consistent width */
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button.active {
+      background:wineblueS;    /* clicked button turns gray */
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+      padding: 15px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 5px;
+      min-height: 40px;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>ES6 Functions Showcase</h1>
+  <button onclick="showArrow(event)">Arrow Function</button>
+  <button onclick="showDefault(event)">Default Parameter</button>
+  <button onclick="showRest(event)">Rest Params</button>
+  <button onclick="showSpread(event)">Spread Operator</button>
+  <button onclick="showObjectLiteral(event)">Object Literal</button>
+  <button onclick="showBlockScope(event)">Block Scope</button>
+  <button onclick="showThis(event)">Arrow `this`</button>
+  <button onclick="showGenerator(event)">Generator</button>
+  <button onclick="showPromise(event)">Promise</button>
+  <button onclick="showModule(event)">Module (Simulated)</button>
+  
+  <div id="output">Click a button to see result</div>
+
+  <script>
+    // Helper to set active button
+     function setActive(button) 
+	     {
+           document.querySelectorAll("button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+         }
+      // 1. Arrow Function
+        const add = (a, b) => a + b;
+     // 2. Default Parameters
+       function greet(name = "Guest") 
+	   {
+	      return `Hello, ${name}`;
+       }
+      // 3. Rest Parameters
+         const sum = (...nums) => nums.reduce((acc, val) => acc + val, 0);
+     // 4. Spread Operator
+         const nums = [10, 20, 30];
+    // 5. Enhanced Object Literals
+         const person = 
+	{
+      name: "Ravi",
+      greet() 
+	  {
+        return `Hi, I'm ${this.name}`;
+      }
+    };
+   // 6. Block Scope with let/const
+      function blockScopeDemo() 
+	   {
+         {
+          let x = 5;
+          const y = 10;
+          return `Inside block: x=${x}, y=${y}`;
+        }
+    }
+  // 7. Arrow `this` binding
+     const obj = 
+	 {
+       value: 42,
+       regularFunc: function()
+	   {
+        return `Regular function this.value = ${this.value}`;
+       },
+       arrowFunc: () => `Arrow function this.value = ${this?.value}`
+     };
+    // 8. Generator
+    function* counter() 
+	{
+      let i = 1;
+      while (i <= 3) 
+	  {
+        yield i++;
+      }
+    }
+  // 9. Promise
+    const asyncTask = () => new Promise((resolve) => 
+	{
+      setTimeout(() => resolve("Promise resolved after 1 second!"), 1000);
+    });
+  // 10. Modules (simulated inline)
+    const moduleDemo = (() => 
+	{
+      const secret = "Module private data";
+      return 
+	  {
+        reveal: () => `Accessing: ${secret}`
+      };
+    })();
+  // Event Handlers
+    function showArrow(e)
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = "Arrow add(5,3): " + add(5,3);
+    }
+    function showDefault(e) 
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = greet();
+    }
+    function showRest(e)
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = "Sum: " + sum(1,2,3,4,5);
+    }
+    function showSpread(e) 
+	{
+      setActive(e.target);
+	  
+      document.getElementById("output").textContent = "Max: " + Math.max(...nums);
+    }
+    function showObjectLiteral(e)
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = person.greet();
+    }
+    function showBlockScope(e)
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = blockScopeDemo();
+    }
+    function showThis(e) 
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = obj.regularFunc() + " | " + obj.arrowFunc();
+    }
+    function showGenerator(e) 
+	{
+      setActive(e.target);
+      const gen = counter();
+      let values = [];
+      for (let val of gen) values.push(val);
+      document.getElementById("output").textContent = "Generator values: " + values.join(", ");
+    }
+    function showPromise(e) 
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = "Waiting for promise...";
+      asyncTask().then(result => 
+	  {
+        document.getElementById("output").textContent = result;
+      });
+    }
+    function showModule(e) 
+	{
+      setActive(e.target);
+      document.getElementById("output").textContent = moduleDemo.reveal();
+    }
+  </script>
+</body>
+</html>
